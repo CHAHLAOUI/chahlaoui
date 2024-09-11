@@ -1,0 +1,17 @@
+Makefile
+README.md
+TODO
+build
+builtins
+execution
+expanding
+ft_wildcard.c
+herdoc
+minishell
+minishell.c
+minishell.h
+minishell.tldr
+parssing
+s
+signals.c
+test_dir
