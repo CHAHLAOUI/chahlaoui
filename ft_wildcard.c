@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 21:03:32 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 23:26:34 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 09:43:55 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char	*ft_wildcard(char *dirname)
 	char			*temp_path;
 	char			*path;
 
-	dir = opendir(dirname);
+	(dir = opendir(dirname), current = NULL);
 	if (!dir)
 	{
 		perror("Error opening directory");
