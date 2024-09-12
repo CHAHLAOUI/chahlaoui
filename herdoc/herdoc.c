@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:48:00 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/10 02:14:27 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:37:59 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	handle_heredoc_input(int fd_w, char *delimiter, t_shell *shell)
 	char	*exp_line;
 	char	*tmp;
 
+	tmp = remove_q(delimiter);
 	signal(SIGINT, handle_signal_herdoc);
 	while (1)
 	{
 		input_line = readline("> ");
-		tmp = remove_q(delimiter);
 		if (!input_line || ft_strcmp(tmp, input_line) == 0)
 			break ;
 		if (*input_line == '\0')
@@ -35,9 +35,9 @@ static void	handle_heredoc_input(int fd_w, char *delimiter, t_shell *shell)
 			write_fd(fd_w, exp_line);
 			free(exp_line);
 		}
-		(free(input_line), free(tmp));
+		free(input_line);
 	}
-	free(input_line);
+	(free(input_line), free(tmp));
 }
 
 static int	open_heredoc(char **filename, char **name_fre, int *fd_w, int *fd_r)
@@ -53,7 +53,7 @@ static int	open_heredoc(char **filename, char **name_fre, int *fd_w, int *fd_r)
 	return (0);
 }
 
-static int	process_redirection(t_cmd *cmd, t_shell *shell, int i, char *del)
+static int	process_redirection(t_cmd *cmd, t_shell *shell, char *del)
 {
 	char	*filename;
 	char	*name_fre;
@@ -63,7 +63,6 @@ static int	process_redirection(t_cmd *cmd, t_shell *shell, int i, char *del)
 
 	f = dup(0);
 	heredoc_flag = 0;
-	del = cmd->red[i + 1];
 	if (open_heredoc(&filename, &name_fre, &fd_w, &fd_r) == -1)
 		return (-1);
 	handle_heredoc_input(fd_w, del, shell);
@@ -73,6 +72,10 @@ static int	process_redirection(t_cmd *cmd, t_shell *shell, int i, char *del)
 		dup2(f, 0);
 		(close(f), close(fd_r));
 		(close(fd_w), free(filename));
+		exit_stat(1);
+		free_cmd(cmd);
+		ft_free(shell->args);
+		free(shell->input);
 		return (-3);
 	}
 	close(fd_w);
@@ -96,7 +99,7 @@ int	ft_heredoc(t_shell *shell)
 		{
 			if (ft_strcmp(cmd->red[i], "<<") == 0 && cmd->red[i + 1])
 			{
-				check_hec = process_redirection(cmd, shell, i, cmd->red[i + 1]);
+				check_hec = process_redirection(cmd, shell, cmd->red[i + 1]);
 				if (check_hec == -3)
 					return (-3);
 				if (check_hec == -1)

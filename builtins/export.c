@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:05:11 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/11 22:59:36 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:48:01 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ static int	update_or_add(t_env **env, char *key, char *value, int append)
 	{
 		if (ft_strlen(value) == 0 && append == 3)
 		{
-			if (add_node_env(key, value, env) == 1)
-				(free(key), free(value), exit_stat(0));
+			if (add_node_env(key, ft_strdup(value), env) == 1)
+				(free(key), free(value), exit_stat(0));	
 		}
 		else if (add_node_env(key, add_quotes(value), env) == 1)
 			(free(key), free(value), exit_stat(0));
-		return (1);
+		return (free(value), exit_stat(0), 1);
 	}
 	return (0);
 }

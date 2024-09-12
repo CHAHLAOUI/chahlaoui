@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:36:10 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 22:49:45 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:45:13 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	free_cmd(t_cmd *head)
 		if (temp->expd)
 			free(temp->expd);
 		free(temp);
+		if (temp->fd_herdoc != -1)
+			close(temp->fd_herdoc);
 		temp = NULL;
 	}
 }

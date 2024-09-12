@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:07:54 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/11 02:06:15 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:47:35 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@ void	signal_handler(int signum)
 		exit_stat(130);
 	}
 	else if (signum == SIGQUIT)
+	{
 		(void)signum;
+		exit_stat(131);
+	}
 }

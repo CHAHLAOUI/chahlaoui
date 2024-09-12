@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils_get_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amandour <amandour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:42:29 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/11 21:42:30 by amandour         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:23:41 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*valid_path(char *path_value, char *cmd)
 		if (!path)
 			exit(1);
 		free(tmp);
-		if (access(path, F_OK) == 0)
+		if (access(path, F_OK) == 0 )
 			return (ft_freee(paths), path);
 		free(path);
 		j++;
@@ -68,8 +68,8 @@ char	*get_path(char *cmd, char **env)
 	int		i;
 
 	i = 0 ;
-	if (access(cmd, F_OK) == 0)
-		return (cmd);
+	// if (access(cmd, F_OK) == 0)
+	// 	return (cmd);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
