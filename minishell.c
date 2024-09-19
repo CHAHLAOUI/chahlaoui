@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 22:39:36 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 22:39:57 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:44:41 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	main_main(t_shell *shell)
 		execution(shell);
 		free_cmd(shell->head);
 		ft_free(shell->args);
-		free(shell->input); 
+		free(shell->input);
 	}
 }
 
@@ -65,6 +65,6 @@ int	main(int ac, char **av, char **env)
 		return (-1);
 	main_main(&shell);
 	free_env_list(shell.my_env);
-	// clear_history();
+	clear_history();
 	return (0);
 }

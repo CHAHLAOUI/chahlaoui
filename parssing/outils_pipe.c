@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 00:47:22 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/09 23:34:00 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:14:55 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_cmd	*new_cmd(int num_cmds, int num_reds)
 		return (free(node->cmd), free(node), NULL);
 	node->red[num_reds] = NULL;
 	node->next = NULL;
+	node->fd_herdoc = -1;
 	return (node);
 }
 

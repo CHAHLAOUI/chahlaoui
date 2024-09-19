@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 21:03:32 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/12 09:43:55 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:37:45 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,24 +118,24 @@ char	*ft_wildcard(char *dirname)
 	char			*temp_path;
 	char			*path;
 
-	(dir = opendir(dirname), current = NULL);
+	dir = opendir(dirname);
 	if (!dir)
-	{
-		perror("Error opening directory");
-		return (NULL);
-	}
-	path = ft_strdup("");
-	while (current != NULL)
+		return (perror("Error opening directory"), NULL);
+	(1) && (current = readdir(dir), path = ft_strdup(""));
+	while (current)
 	{
 		if (ft_strncmp(current->d_name, ".", 1) == 0)
+		{
+			current = readdir(dir);
 			continue ;
+		}
 		temp_path = ft_strjoin(path, current->d_name);
 		free(path);
 		path = temp_path;
 		temp_path = ft_strjoin(path, " ");
 		free(path);
-		(1) && (path = temp_path, current = readdir(dir));
+		path = temp_path;
+		current = readdir(dir);
 	}
-	closedir(dir);
-	return (sort_wildcard(path));
+	return (closedir(dir), sort_wildcard(path));
 }

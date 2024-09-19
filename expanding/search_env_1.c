@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_env_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amandour <amandour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:42:04 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/11 21:42:05 by amandour         ###   ########.fr       */
+/*   Updated: 2024/09/12 23:11:33 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	count_elements(char **str)
 	}
 	return (count);
 }
+
+
 
 char	*copie_avant_d(char *result, int *res_len, char *cmd, int premier_len)
 {
