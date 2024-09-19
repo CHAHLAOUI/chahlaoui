@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:48:00 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/12 22:37:59 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:54:05 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	handle_heredoc_input(int fd_w, char *delimiter, t_shell *shell)
 	char	*tmp;
 
 	tmp = remove_q(delimiter);
+	rl_catch_signals = 1;
 	signal(SIGINT, handle_signal_herdoc);
 	while (1)
 	{
@@ -27,7 +28,7 @@ static void	handle_heredoc_input(int fd_w, char *delimiter, t_shell *shell)
 			break ;
 		if (*input_line == '\0')
 			write(fd_w, "", 0);
-		else if (d_quoted_del(delimiter) || s_quoted_del(delimiter))
+		if (d_quoted_del(delimiter) || s_quoted_del(delimiter))
 			write_fd(fd_w, input_line);
 		else
 		{
@@ -45,6 +46,7 @@ static int	open_heredoc(char **filename, char **name_fre, int *fd_w, int *fd_r)
 	*name_fre = generate_unique_filename();
 	*filename = ft_strjoin("/private/tmp/file_", *name_fre);
 	free(*name_fre);
+	unlink(*filename);
 	*fd_w = open(*filename, O_CREAT | O_WRONLY, 0777);
 	*fd_r = open(*filename, O_CREAT | O_RDONLY, 0777);
 	if (*fd_w == -1 || *fd_r == -1)
@@ -61,29 +63,28 @@ static int	process_redirection(t_cmd *cmd, t_shell *shell, char *del)
 	int		fd_r;
 	int		f;
 
-	f = dup(0);
-	heredoc_flag = 0;
+	(1) && (heredoc_flag = 0, f = dup(0));
 	if (open_heredoc(&filename, &name_fre, &fd_w, &fd_r) == -1)
 		return (-1);
 	handle_heredoc_input(fd_w, del, shell);
+	rl_catch_signals = 0;
 	if (heredoc_flag)
 	{
-		heredoc_flag = 0;
-		dup2(f, 0);
+		(1) && (heredoc_flag = 0, dup2(f, 0));
 		(close(f), close(fd_r));
-		(close(fd_w), free(filename));
-		exit_stat(1);
-		free_cmd(cmd);
+		(close(fd_w), free(filename), exit_stat(1));
+		free_cmd(shell->head);
 		ft_free(shell->args);
-		free(shell->input);
-		return (-3);
+		return (free(shell->input), -3);
 	}
-	close(fd_w);
+	(1) && (close(fd_w), close(f));
 	free(filename);
+	if (cmd->fd_herdoc != -1)
+		close(cmd->fd_herdoc);
 	cmd->fd_herdoc = fd_r;
-	close(f);
 	return (0);
 }
+
 
 int	ft_heredoc(t_shell *shell)
 {

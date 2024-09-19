@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:36:10 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/12 22:45:13 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/16 09:48:19 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ void	free_cmd(t_cmd *head)
 		ft_free(temp->red);
 		if (temp->expd)
 			free(temp->expd);
-		free(temp);
 		if (temp->fd_herdoc != -1)
 			close(temp->fd_herdoc);
+		free(temp);
 		temp = NULL;
 	}
 }
-
-// if (temp->fd_herdoc)// 	close(temp->fd_herdoc);
 
 void	free_env_list(t_env *env)
 {

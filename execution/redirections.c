@@ -6,56 +6,62 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:43:41 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/12 22:46:01 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:29:35 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	handle_output_redirection(char *filename, int append)
+int	redirect_output_trunc(char **red, int *i)
 {
 	int	fd;
 
-	if (append)
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(red[*i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror("open");
-		exit_stat(1);
-		return (-1);
+		exit(EXIT_FAILURE);
 	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
-		close(fd);
-		return (-1);
-	}
+	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	return (0);
+	*i += 2;
+	return (1);
 }
 
-int	handle_input_redirection(char *filename)
+int	redirect_output_append(char **red, int *i)
 {
 	int	fd;
 
-	fd = open(filename, O_RDONLY);
+	fd = open(red[*i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+		return (perror("open"), EXIT_FAILURE);
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	*i += 2;
+	return (1);
+}
+
+int	redirect_input(char **red, int *i)
+{
+	int	fd;
+
+	fd = open(red[*i + 1], O_RDONLY);
 	if (fd < 0)
 	{
 		perror("open");
-		exit_stat(1);
-		return (-1);
+		exit(EXIT_FAILURE);
 	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	return (0);
+	*i += 2;
+	return (1);
 }
 
-void	handle_heredoc(int fd_herdoc)
+int	handle_heredoc(int fd_heredoc)
 {
-	dup2(fd_herdoc, STDIN_FILENO);
-	close(fd_herdoc);
+	dup2(fd_heredoc, STDIN_FILENO);
+	close(fd_heredoc);
+	return (1);
 }
 
 int	redirections(t_cmd *cmd)
@@ -67,26 +73,14 @@ int	redirections(t_cmd *cmd)
 	{
 		if (cmd->ambiguous_redirect)
 			return (0);
-		if (strcmp(cmd->red[i], "<<") == 0 && cmd->red[i + 1])
+		if (ft_strcmp(cmd->red[i], ">") == 0 && cmd->red[i + 1])
+			redirect_output_trunc(cmd->red, &i);
+		else if (ft_strcmp(cmd->red[i], ">>") == 0 && cmd->red[i + 1])
+			redirect_output_append(cmd->red, &i);
+		else if (ft_strcmp(cmd->red[i], "<") == 0 && cmd->red[i + 1])
+			redirect_input(cmd->red, &i);
+		else if (ft_strcmp(cmd->red[i], "<<") == 0 && cmd->red[i + 1])
 			(handle_heredoc(cmd->fd_herdoc), i += 2);
-		else if (strcmp(cmd->red[i], ">") == 0 && cmd->red[i + 1])
-		{
-			if (handle_output_redirection(cmd->red[i + 1], 0) == -1)
-				return (0);
-			i += 2;
-		}
-		else if (strcmp(cmd->red[i], ">>") == 0 && cmd->red[i + 1])
-		{
-			if (handle_output_redirection(cmd->red[i + 1], 1) == -1)
-				return (0);
-			i += 2;
-		}
-		else if (strcmp(cmd->red[i], "<") == 0 && cmd->red[i + 1])
-		{
-			if (handle_input_redirection(cmd->red[i + 1]) == -1)
-				return (0);
-			i += 2;
-		}
 		else
 			i++;
 	}

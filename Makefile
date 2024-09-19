@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amandour <amandour@student.42.fr>          +#+  +:+       +#+         #
+#    By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/23 19:12:38 by achahlao          #+#    #+#              #
-#    Updated: 2024/09/11 14:21:00 by amandour         ###   ########.fr        #
+#    Updated: 2024/09/19 22:18:38 by achahlao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror  #-g -fsanitize=address
-LDFLAGS = -lreadline #-g 
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+LDFLAGS = -lreadline -g 
 SRC = $(shell find . -type f -name "*.c")
 OBJS_DIR = build/
 OBJ     = $(patsubst %.c,$(OBJS_DIR)%.o,$(SRC))

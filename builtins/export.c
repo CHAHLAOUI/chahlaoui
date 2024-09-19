@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:05:11 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/12 22:48:01 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/18 09:57:16 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*add_quotes(char *str)
 	return (new_str);
 }
 
-static int	update_or_add(t_env **env, char *key, char *value, int append)
+int	update_or_add(t_env **env, char *key, char *value, int append)
 {
 	if (is_identifier(key) == -1)
 	{
@@ -64,7 +64,7 @@ static int	update_or_add(t_env **env, char *key, char *value, int append)
 		(free(key), free(value), exit_stat(1));
 		return (1);
 	}
-	else if (check_key(*env, key))
+	if (check_key(*env, key))
 	{
 		(update_env_value(env, key, value, append), free(key));
 		return (exit_stat(0), 1);
@@ -74,7 +74,7 @@ static int	update_or_add(t_env **env, char *key, char *value, int append)
 		if (ft_strlen(value) == 0 && append == 3)
 		{
 			if (add_node_env(key, ft_strdup(value), env) == 1)
-				(free(key), free(value), exit_stat(0));	
+				(free(key), free(value), exit_stat(0));
 		}
 		else if (add_node_env(key, add_quotes(value), env) == 1)
 			(free(key), free(value), exit_stat(0));

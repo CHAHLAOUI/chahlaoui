@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amandour <amandour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 17:43:56 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/11 19:42:18 by amandour         ###   ########.fr       */
+/*   Updated: 2024/09/18 09:02:40 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	unset_var(t_env **env, char *key)
 		return ;
 	while (tmp)
 	{
-		if (strcmp(tmp->key, key) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			if (prev)
 				prev->next = tmp->next;

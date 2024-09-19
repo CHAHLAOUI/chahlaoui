@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 00:47:22 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/12 21:14:55 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:44:30 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_cmd	*new_cmd(int num_cmds, int num_reds)
 	node->red[num_reds] = NULL;
 	node->next = NULL;
 	node->fd_herdoc = -1;
+	node->ambiguous_redirect = 0;
 	return (node);
 }
 

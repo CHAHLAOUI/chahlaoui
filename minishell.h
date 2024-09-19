@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:11:47 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 23:11:27 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:34:02 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include <signal.h>
+#include <termios.h>
 # include <unistd.h>
 # include <ctype.h>
 # include <string.h>
@@ -78,7 +79,6 @@ typedef struct s_shell
 	char	**args;
 	char	*stored_cwd;
 	int		status;
-	int		heredoc_fd;
 }		t_shell;
 
 //********************** struct de  exuc les arguments******************//
@@ -87,13 +87,16 @@ typedef struct s_info
 {
 	t_cmd	*cmd;
 	t_shell	*shell;
+	pid_t	*pids;
 	int		n;
 	int		saved_stdin;
 	int		saved_stdout;
 	int		(*pipefd)[2];
 }		t_info;
 
-int		heredoc_flag;
+int	heredoc_flag;
+
+int		is_in_child(int x);
 char	*read_in_line(void);
 int		ft_parsing(char *line);
 int		ft_strcmp(char *s1, char *s2);
@@ -173,7 +176,6 @@ int		ft_heredoc(t_shell *shell);
 void	execute_command(t_cmd *cmd, t_env *env);
 char	*get_env_value(char *env_line);
 char	*get_env_key(char *env_line);
-int		redirections(t_cmd *cmd);
 void	remove_q_all_cmd(t_cmd *cmd);
 void	*ft_memmove(void *d1, const void *s1, size_t len);
 char	*add_quotes(char *str);
@@ -189,9 +191,10 @@ int		is_all_spaces(const char *str);
 void	set_st_ext(int exit_st, int N_exit);
 int		is_directory(const char *path);
 void	free_fil_args(char **filtered_cmd);
-char	**empty_args(char **cmd);
+void	empty_args(t_info *info);
 int		compare_pos1(char *str);
-char	*ft_wildcard(char *dirname);
+char	*ft_wildcard(char *pattern);
+void	expand_wildcard(t_cmd *cmd, int *index);
 int		count_w_test(char *str);
 void	put_identifier(char *key, char *value);
 void	child_process(t_info *info, int i);
@@ -218,5 +221,17 @@ void	handle_error(char *f_key, char *f_value);
 void	ft_env(t_env *list);
 int		check_quotes1(char *str);
 int		is_last_command_exit(t_cmd *cmd_list);
-
+void	update_cd(t_env **env, char *key, char *value, int append);
+int		redirections(t_cmd *cmd);
+char	*rest_cmd(char *result, int res_len, char *cmd);
+void	expand_wildcard(t_cmd *cmd, int *index);
+int		is_wildcard_quoted(char *str);
+void	expand_cmd(t_cmd *cmd, t_env *env);
+void	proc_env_var(char **str, t_env *env, int *expand);
+char	**get_wildcard_results(char *wildcard, int *t_count);
+void	insert_resul(t_cmd *cmd, char **wildcard_res, int *index, int t_count);
+char	*ft_strjoin1(char *s1, char *s2);
+int		update_or_add(t_env **env, char *key, char *value, int append);
+void	update_cd_value(t_env **env, char *key, char *value, int append);
+int		update_cd_add(t_env **env, char *key, char *value, int append);
 #endif

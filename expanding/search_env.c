@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:39:01 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/12 23:22:46 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/17 04:23:26 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,6 @@ char	*get_var_value(char **cmd, t_env *env)
 		return (var_value = ft_strdup(var_value));
 	else
 		return (ft_strdup(""));
-}
-
-char	*rest_cmd(char *result, int res_len, char *cmd)
-{
-	int	len_fin;
-
-	len_fin = ft_strlen(cmd);
-	result = ft_realloc(result, res_len, res_len + len_fin + 1);
-	if (!result)
-		return (NULL);
-	ft_memcpy(result + res_len, cmd, len_fin + 1);
-	return (result);
 }
 
 char	*append_result(char *result, int *res_len, char *value)
@@ -74,12 +62,28 @@ char	*get_value(char *cmd, char *value, char *result, int *res_len)
 	return (result);
 }
 
+char	*value_apre_dollar_(char **cmd, t_env *env, int *res_len, char *result)
+{
+	char	*value;
 
+	(*cmd)++;
+	if (**cmd == '?')
+	{
+		value = ft_itoa(exit_stat(-1));
+		(*cmd)++;
+	}
+	else
+	{
+		value = get_var_value(cmd, env);
+	}
+	result = get_value(*cmd, value, result, res_len);
+	free(value);
+	return (result);
+}
 
 char	*search_and_replace_env_var(char *cmd, t_env *env)
 {
 	char	*dollar_pos;
-	char	*value;
 	char	*result;
 	int		premier_len;
 	int		res_len;
@@ -90,73 +94,16 @@ char	*search_and_replace_env_var(char *cmd, t_env *env)
 		if (is_single_quotes(cmd, dollar_pos))
 		{
 			dollar_pos = ft_strchr(dollar_pos + 1, '$');
-			continue;
+			continue ;
 		}
 		premier_len = dollar_pos - cmd;
 		result = copie_avant_d(result, &res_len, cmd, premier_len);
 		cmd = dollar_pos;
 		if (*(cmd + 1) == '\0' || *(cmd + 1) == ' ' || *(cmd + 1) == '"')
-			(result = append_result(result, &res_len, "$"), cmd++);
+			(1) && (result = append_result(result, &res_len, "$"), cmd++);
 		else
-		{
-			cmd++;
-			if (*cmd == '?')
-				(value = ft_itoa(exit_stat(-1)), cmd++);
-			else
-				value = get_var_value(&cmd, env);
-			result = get_value(cmd, value, result, &res_len);
-			free(value);
-		}
+			result = value_apre_dollar_(&cmd, env, &res_len, result);
 		dollar_pos = ft_strchr(cmd, '$');
 	}
 	return (rest_cmd(result, res_len, cmd));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// char	*search_and_replace_env_var(char *cmd, t_env *env)
-// {
-// 	char	*dollar_pos;
-// 	char	*value;
-// 	char	*result;
-// 	int		premier_len;
-// 	int		res_len;
-
-// 	(1) && (dollar_pos = ft_strchr(cmd, '$'), result = NULL, res_len = 0);
-// 	while (dollar_pos)
-// 	{
-// 			if (is_single_quotes(cmd, dollar_pos))
-// 			{
-// 				dollar_pos = ft_strchr(dollar_pos + 1, '$');
-// 				continue ;
-// 			}
-// 			if (*(dollar_pos + 1) == '\0' || *(dollar_pos + 1) == ' ' || *(dollar_pos + 1) == '"')
-// 			{
-// 				result = append_result(result, &res_len, "$");
-// 				cmd++;
-// 			}
-			
-// 			premier_len = dollar_pos - cmd;
-// 			result = copie_avant_d(result, &res_len, cmd, premier_len);
-// 			cmd = dollar_pos + 1;
-// 			if (*cmd == '?')
-// 				(1) && (value = ft_itoa(exit_stat(-1)), cmd++);
-// 			else
-// 				value = get_var_value(&cmd, env);
-// 			result = get_value(cmd, value, result, &res_len);
-// 			(1) && (free(value), dollar_pos = ft_strchr(cmd, '$'));
-// 	}
-// 	return (rest_cmd(result, res_len, cmd));
-// }
-

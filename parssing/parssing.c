@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 10:48:38 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/09 23:45:13 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/17 04:31:33 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,32 @@ char	*ft_strstr(char *src, char *rech)
 		++i;
 	}
 	return (0);
+}
+
+char	*ft_strjoin1(char *s1, char *s2)
+{
+	char	*niveau;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!s1)
+		return (ft_strdup(s2));
+	niveau = (char *)malloc(sizeof(char) * (strlen(s1) + strlen(s2) + 1));
+	if (!niveau)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		niveau[i] = s1[i];
+		i++;
+	}
+	while (s2[j] != '\0')
+	{
+		niveau[i] = s2[j];
+		i++;
+		j++;
+	}
+	niveau[i] = '\0';
+	return (niveau);
 }

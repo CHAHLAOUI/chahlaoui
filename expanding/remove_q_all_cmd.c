@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:38:56 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/11 22:52:00 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:45:50 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	remove_q_all_cmd(t_cmd *cmd)
 		i = 0;
 		while (current_cmd->red && current_cmd->red[i])
 		{
-			if (strcmp(current_cmd->red[i], "<<") == 0)
+			if (ft_strcmp(current_cmd->red[i], "<<") == 0)
 				i++;
 			else
 				remove_q_red(current_cmd, i);

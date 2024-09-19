@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:20:43 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 22:59:12 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:19:20 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,25 @@ void	put_exit(char *mini, char *path, char *err)
 	exit_st(255);
 }
 
-void	ft_exit(t_cmd *cmd)
+void ft_exit(t_cmd *cmd)
 {
 	size_t		nbr_arg;
 	long int	num;
 	t_cmd		*tmp;
+	int			is_piped;
 
-	(1) && (tmp = cmd, num = 1);
+	(1) && (tmp = cmd, num = 1, is_piped = 0);
 	if (is_last_command_exit(tmp))
 	{
+		if (tmp->next)
+			is_piped = 1;
 		while (tmp->next)
 			tmp = tmp->next;
 		nbr_arg = compte_arg(tmp->cmd);
 		if (nbr_arg >= 2)
 			num = ft_atoi(tmp->cmd[1]);
 		else
-			exit(exit_stat(-1));
+			num = exit_stat(-1);
 		if (nbr_arg > 2 && num != -1)
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
@@ -98,6 +101,8 @@ void	ft_exit(t_cmd *cmd)
 		}
 		else if (num == -1)
 			put_exit("mini:exit:", tmp->cmd[1], ":numeric argument required\n");
+		if (!is_piped)
+			write(1, "exit\n", 5);
 		(exit_stat(num), exit(num));
 	}
 }

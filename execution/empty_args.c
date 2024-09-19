@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 09:39:32 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 11:44:01 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:04:08 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,31 @@ void	free_fil_args(char **filtered_cmd)
 	free(filtered_cmd);
 }
 
-char	**empty_args(char **cmd)
+void	empty_args(t_info *info)
 {
+	t_cmd	*tmp;
 	char	**filt_cmd;
 	int		i;
 	int		j;
 	int		count;
 
-	(1) && (i = 0, count = 0);
-	while (cmd[i])
+	(1) && (i = -1, count = 0, tmp = (info)->cmd);
+	while (tmp->cmd[++i])
 	{
-		if (cmd[i][0] != '\0')
+		if (tmp->cmd[i][0] != '\0' || \
+			(tmp->cmd[i][0] == '\0' && tmp->expd[i] != 2))
 			count++;
-		i++;
 	}
 	filt_cmd = malloc((count + 1) * sizeof(char *));
 	if (!filt_cmd)
-		return (NULL);
-	(1) && (j = 0, i = 0);
-	while (cmd[i])
+		return ;
+	(1) && (j = 0, i = -1);
+	while (tmp->cmd[++i])
 	{
-		if (cmd[i][0] != '\0')
-			filt_cmd[j++] = ft_strdup(cmd[i]);
-		i++;
+		if (tmp->cmd[i][0] != '\0' || \
+			(tmp->cmd[i][0] == '\0' && tmp->expd[i] != 2))
+			filt_cmd[j++] = ft_strdup(tmp->cmd[i]);
 	}
-	filt_cmd[j] = NULL;
-	return (filt_cmd);
+	(free_fil_args(tmp->cmd), filt_cmd[j] = NULL);
+	(info)->cmd->cmd = filt_cmd;
 }

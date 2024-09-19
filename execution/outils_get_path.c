@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:42:29 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/12 11:23:41 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/19 06:53:59 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*valid_path(char *path_value, char *cmd)
 		if (!path)
 			exit(1);
 		free(tmp);
-		if (access(path, F_OK) == 0 )
+		if (access(path, F_OK) == 0)
 			return (ft_freee(paths), path);
 		free(path);
 		j++;
@@ -68,18 +68,11 @@ char	*get_path(char *cmd, char **env)
 	int		i;
 
 	i = 0 ;
-	// if (access(cmd, F_OK) == 0)
-	// 	return (cmd);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 			return (valid_path(env[i] + 5, cmd));
 		i++;
 	}
-	if (ft_strchar(cmd, '/'))
-		printf("minishell: %s: No such file or directory\n", cmd);
-	else
-		printf("minishell: %s: No such file or directory\n", cmd);
-	exit(EXIT_FAILURE);
 	return (NULL);
 }

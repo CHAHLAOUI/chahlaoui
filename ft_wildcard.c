@@ -6,39 +6,11 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 21:03:32 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/12 20:37:45 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:25:37 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*ft_strjoin1(char *s1, char *s2)
-{
-	char	*niveau;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	if (!s1)
-		return (strdup(s2));
-	niveau = (char *)malloc(sizeof(char) * (strlen(s1) + strlen(s2) + 1));
-	if (!niveau)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		niveau[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-	{
-		niveau[i] = s2[j];
-		i++;
-		j++;
-	}
-	niveau[i] = '\0';
-	return (niveau);
-}
 
 static void	sort_words(char **words)
 {
@@ -52,7 +24,7 @@ static void	sort_words(char **words)
 		j = i + 1;
 		while (words[j])
 		{
-			if (strcmp(words[i], words[j]) > 0)
+			if (ft_strcmp(words[i], words[j]) > 0)
 			{
 				temp = words[j];
 				words[j] = words[i];
@@ -70,7 +42,7 @@ static char	*concatenate_words(char **words)
 	char	*temp;
 	int		i;
 
-	result = strdup("");
+	result = ft_strdup("");
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -84,8 +56,8 @@ static char	*concatenate_words(char **words)
 		result = temp;
 		i++;
 	}
-	if (strlen(result) > 0)
-		result[strlen(result) - 1] = '\0';
+	if (ft_strlen(result) > 0)
+		result[ft_strlen(result) - 1] = '\0';
 	return (result);
 }
 
@@ -111,31 +83,56 @@ char	*sort_wildcard(char *dir)
 	return (sorted_result);
 }
 
-char	*ft_wildcard(char *dirname)
+int	match_wildcard(char *pattern, char *filename)
 {
-	struct dirent	*current;
-	DIR				*dir;
-	char			*temp_path;
-	char			*path;
+	char	*p;
+	char	*f;
+	char	*wildcard;
+	char	*after_wildcard;
 
-	dir = opendir(dirname);
-	if (!dir)
-		return (perror("Error opening directory"), NULL);
-	(1) && (current = readdir(dir), path = ft_strdup(""));
-	while (current)
+	(1) && (wildcard = NULL, after_wildcard = NULL);
+	(1) && (p = pattern, f = filename);
+	while (*f)
 	{
-		if (ft_strncmp(current->d_name, ".", 1) == 0)
+		if (*p == '*')
+			(1) && (wildcard = p++, after_wildcard = f);
+		else if (*p == *f)
+			(1) && (p++, f++);
+		else if (wildcard)
+			(1) && (p = wildcard + 1, f = ++after_wildcard);
+		else
+			return (0);
+	}
+	while (*p == '*')
+		p++;
+	return (*p == '\0');
+}
+
+char	*ft_wildcard(char *pattern)
+{
+	struct dirent	*entry;
+	DIR				*dir;
+	char			*result;
+	char			*tmp_r;
+
+	(1) && (dir = opendir("."), result = NULL);
+	if (!dir)
+		return (NULL);
+	(1) && (result = ft_strdup(""), entry = readdir(dir));
+	while (entry)
+	{
+		if (ft_strncmp(entry->d_name, ".", 1) == 0)
 		{
-			current = readdir(dir);
+			entry = readdir(dir);
 			continue ;
 		}
-		temp_path = ft_strjoin(path, current->d_name);
-		free(path);
-		path = temp_path;
-		temp_path = ft_strjoin(path, " ");
-		free(path);
-		path = temp_path;
-		current = readdir(dir);
+		else if (match_wildcard(pattern, entry->d_name))
+		{
+			tmp_r = ft_strjoin1(result, entry->d_name);
+			(free(result), result = ft_strjoin1(tmp_r, " "));
+			free(tmp_r);
+		}
+		entry = readdir(dir);
 	}
-	return (closedir(dir), sort_wildcard(path));
+	return (closedir(dir), sort_wildcard(result));
 }

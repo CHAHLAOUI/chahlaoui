@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 14:53:07 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/05 22:23:26 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/17 04:11:30 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*handle_readline(void)
 
 	while (1)
 	{
-		input = readline("./ minishell~$ ");
+		input = readline("minishell~$ ");
 		if (input == NULL )
 		{
 			ft_putstr_fd("exit\n", 2);

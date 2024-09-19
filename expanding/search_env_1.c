@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:42:04 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/12 23:11:33 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/17 04:23:49 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	count_elements(char **str)
 	return (count);
 }
 
-
-
 char	*copie_avant_d(char *result, int *res_len, char *cmd, int premier_len)
 {
 	result = ft_realloc(result,*res_len, *res_len + premier_len + 1);
@@ -54,4 +52,16 @@ char	*get_env_1(char *name, t_env *my_env)
 		my_env = my_env->next;
 	}
 	return (NULL);
+}
+
+char	*rest_cmd(char *result, int res_len, char *cmd)
+{
+	int	len_fin;
+
+	len_fin = ft_strlen(cmd);
+	result = ft_realloc(result, res_len, res_len + len_fin + 1);
+	if (!result)
+		return (NULL);
+	ft_memcpy(result + res_len, cmd, len_fin + 1);
+	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amandour <amandour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 21:39:14 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 17:49:51 by amandour         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:22:48 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	b_pwd(t_shell *shell)
 		return ;
 	}
 	printf("%s\n", cwd);
-	free(shell->stored_cwd);
+	if (shell->stored_cwd)
+		free(shell->stored_cwd);
 	shell->stored_cwd = ft_strdup(cwd);
 	free(cwd);
 	exit_stat(0);

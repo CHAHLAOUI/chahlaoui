@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:03:54 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 01:52:22 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/19 06:58:22 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_env_(char *name, t_env *my_env)
 {
 	while (my_env)
 	{
-		if (strcmp(my_env->key, name) == 0)
+		if (ft_strcmp(my_env->key, name) == 0)
 			return (my_env->value);
 		my_env = my_env->next;
 	}
@@ -28,13 +28,20 @@ static char	*set_path(t_cmd *cmd, char **path, t_env **env)
 	t_cmd	*tmp;
 
 	tmp = cmd;
-	if (!tmp->cmd[1] || strcmp(tmp->cmd[1], "~") == 0 || \
+	if (!tmp->cmd[1] || ft_strcmp(tmp->cmd[1], "~") == 0 || \
 		(!ft_strcmp(cmd->cmd[1], "") && cmd->expd[1] == 2))
+	{
 		*path = get_env_("HOME", *env);
+		if (!*path)
+			printf("HOME  unset\n");
+	}
 	else if (ft_strcmp(tmp->cmd[1], "-") == 0)
 	{
 		*path = get_env_("OLDPWD", *env);
-		printf("%s\n", *path);
+		if (*path)
+			printf("%s\n", *path);
+		else
+			printf("OLDPWD unset\n");
 	}
 	else
 		*path = tmp->cmd[1];
@@ -54,9 +61,9 @@ int	get_dirs(t_env **env, char **path, char **current_dir)
 		return (exit_stat(1), -1);
 	}
 	if (current_dir)
-		update_env_value(env, "OLDPWD", *current_dir, 0);
+		update_cd_add(env, ft_strdup("OLDPWD"), *current_dir, 2);
 	new_pwd = getcwd(NULL, 0);
-	update_env_value(env, "PWD", new_pwd, 0);
+	update_cd_add(env, ft_strdup("PWD"), new_pwd, 2);
 	return (exit_stat(0), 0);
 }
 

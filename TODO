@@ -937,8 +937,78 @@ bash: export: `x y=kkk': not a valid identifier
 
 
 
-1/2/3/4   =>  echo kkkk > sss   
+1/2/3/4   =>  echo kkkk > sss
 
 
 ****************a****************a****************a****************a****************a****************a****************a****************a****************a****************a****************a****************a****************a
 m
+
+
+bash-3.2$ << f
+> bash-3.2$ $?
+bash: 0: command not found
+
+./ minishell~$ <<l
+> 
+./ minishell~$ echo $?
+1
+./ minishell~$ 
+
+======>> Control + D
+
+----------------------------------------------------------------------------------------------
+
+
+./ minishell~$ sleep 1 | ls < y
+open: No such file or directory
+./ minishell~$ echo $?
+0
+
+
+./ minishell~$ exit -9223372036854775808
+mini:exit:-9223372036854775808:numeric argument required
+
+
+./ minishell~$ unset PWD
+./ minishell~$ cd build/
+./ minishell~$ 
+
+
+
+===================== ABDELKADER =====================
+
+
+PATH = /bin
+ls
+minishell: ls: command not found
+
+cd ..
+
+cd ..
+unset PWD
+unset PWD
+
+echo HELLo > $PWD
+
+./minishell
+./minishell
+./minishell
+cntrl + c
+minishell~$ minishell~$ minishell~$
+
+exit | exit
+exit
+exit
+
+env
+echo $?
+
+cat < INVALID FILE
+
+echo HELLO > ""
+
+echo JKDSGFDS > "$x"
+
+
+
+==88843==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x0001005f927d bp 0x7ffeef6140b0 sp 0x7ffeef614080 T0)

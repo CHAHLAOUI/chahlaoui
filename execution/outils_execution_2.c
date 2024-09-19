@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils_execution_2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amandour <amandour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:04:23 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/11 20:05:57 by amandour         ###   ########.fr       */
+/*   Updated: 2024/09/19 22:09:14 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	set_st_ext(int exit_st, int N_exit)
 
 int	is_all_spaces(const char *str)
 {
+	if (!str)
+		return (1);
 	while (*str)
 	{
 		if (!is_espace(*str))
