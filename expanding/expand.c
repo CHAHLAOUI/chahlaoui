@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:09:33 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/18 17:55:34 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/20 23:18:19 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,6 @@ void	expand_wildcard(t_cmd *cmd, int *index)
 		return ;
 }
 
-
-int	is_wildcard_quoted(char *str)
-{
-	int		s_quote;
-	int		d_quote;
-	int		i;
-
-	(1) && (s_quote = 0, d_quote = 0, i = 0);
-	while (str[i])
-	{
-		if (str[i] == '\'' && !d_quote)
-			s_quote = !s_quote;
-		else if (str[i] == '"' && !s_quote)
-			d_quote = !d_quote;
-		else if (str[i] == '*' && !s_quote && !d_quote)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-
-// void expand_cmd(t_cmd *cmd, t_env *env) {
-//     int i;
-
-//     if (cmd->cmd && cmd->expd) {
-//         i = 0;
-//         // Première passe : traiter les variables d'environnement
-//         while (cmd->cmd[i] && i < cmd->cmd_count) {
-//             if (strchr(cmd->cmd[i], '$')) {
-//                 proc_env_var(&cmd->cmd[i], env, &cmd->expd[i]);
-//             }
-//             i++;
-//         }
-
-
-//         i = 0;
-//         while (cmd->cmd[i] && i < cmd->cmd_count) {
-//             if (strchr(cmd->cmd[i], '*') && !is_wildcard_quoted((cmd->cmd[i]))) {
-//                 // Remplacer cmd->cmd[i] par la liste de fichiers correspondants
-//                 expand_wildcard(cmd, &i);
-// 				i++;
-// 				continue;
-
-//             }
-// 			else
-//           	  i++;
-//         }
-//     }
-// }
-
 void	expand_cmd(t_cmd *cmd, t_env *env)
 {
 	int	i;
@@ -89,18 +38,35 @@ void	expand_cmd(t_cmd *cmd, t_env *env)
 		i = 0;
 		while (cmd->cmd[i] && i < cmd->cmd_count)
 		{
-			if (ft_strchr(cmd->cmd[i], '*') && !is_wildcard_quoted(cmd->cmd[i]))
-			{
-				expand_wildcard(cmd, &i);
-			}
 			if (ft_strchr(cmd->cmd[i], '$'))
 			{
 				proc_env_var(&cmd->cmd[i], env, &cmd->expd[i]);
 				i++;
 			}
+			else if (ft_strchr(cmd->cmd[i], '*') && \
+				!is_wildcard_quoted(cmd->cmd[i]))
+			{
+				expand_wildcard(cmd, &i);
+			}
 			else
 				i++;
 		}
+	}
+}
+
+void	ambiguous(char *red, t_cmd *cmd)
+{
+	if (!ft_strcmp(red, "*"))
+	{
+		ft_putstr_fd(red, 2);
+		ft_putstr_fd(": ambiguous redirect\n", 2);
+		cmd->ambiguous_redirect = 1;
+	}
+	else if (ft_count_w(red, ' ') > 1 || !ft_strcmp(red, ""))
+	{
+		ft_putstr_fd(red, 2);
+		ft_putstr_fd(": ambiguous redirect\n", 2);
+		cmd->ambiguous_redirect = 1;
 	}
 }
 
@@ -118,24 +84,15 @@ void	expand_redirections(t_cmd *cmd, t_env *env)
 				i += 2;
 				continue ;
 			}
-			else if (!ft_strcmp(cmd->red[i], "*"))
-			{
-				ft_putstr_fd(cmd->red[i], 2);
-				ft_putstr_fd(": ambiguous redirect\n", 2);
-				cmd->ambiguous_redirect = 1;
+			ambiguous(cmd->red[i], cmd);
+			if (cmd->ambiguous_redirect)
 				return ;
-			}
 			else if (ft_strchr(cmd->red[i], '$'))
 			{
 				proc_env_var(&cmd->red[i], env, &cmd->expd[cmd->cmd_count + i]);
-				if (ft_count_w(cmd->red[i], ' ') > 1 || \
-					!ft_strcmp(cmd->red[i], ""))
-				{
-					ft_putstr_fd(cmd->red[i], 2);
-					ft_putstr_fd(": ambiguous redirect\n", 2);
-					cmd->ambiguous_redirect = 1;
+				ambiguous(cmd->red[i], cmd);
+				if (cmd->ambiguous_redirect)
 					return ;
-				}
 			}
 			i++;
 		}

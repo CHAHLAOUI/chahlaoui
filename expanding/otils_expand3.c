@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:42:11 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/19 08:30:48 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/20 23:17:38 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,24 @@ int	compare_pos1(char *str)
 		return (0);
 	else
 		return (1);
+}
+
+int	is_wildcard_quoted(char *str)
+{
+	int		s_quote;
+	int		d_quote;
+	int		i;
+
+	(1) && (s_quote = 0, d_quote = 0, i = 0);
+	while (str[i])
+	{
+		if (str[i] == '\'' && !d_quote)
+			s_quote = !s_quote;
+		else if (str[i] == '"' && !s_quote)
+			d_quote = !d_quote;
+		else if (str[i] == '*' && !s_quote && !d_quote)
+			return (0);
+		i++;
+	}
+	return (1);
 }

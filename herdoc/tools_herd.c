@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:39:17 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/19 11:58:14 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/20 23:13:32 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_signal_herdoc(int signum)
 	}
 }
 
-int	s_quoted_del(char *delimiter)
+int	s_del(char *delimiter)
 {
 	int	len;
 
@@ -59,7 +59,7 @@ int	s_quoted_del(char *delimiter)
 	return (0);
 }
 
-int	d_quoted_del(char *delimiter)
+int	d_del(char *delimiter)
 {
 	int	len;
 

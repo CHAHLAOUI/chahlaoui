@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:04:23 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/19 22:09:14 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:45:30 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	set_st_ext(int exit_st, int N_exit)
 	exit(N_exit);
 }
 
-int	is_all_spaces(const char *str)
+int	is_all_spaces(char *str)
 {
 	if (!str)
 		return (1);

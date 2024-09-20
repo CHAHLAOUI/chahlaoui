@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 22:39:36 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/19 22:18:11 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:55:10 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	prepare_command(t_shell *shell)
 	}
 	signal(SIGINT, signal_handler);
 	expanding(shell);
-	// print_cmd_list(shell->head);
 	remove_q_all_cmd(shell->head);
 	process_cmd(shell->head);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:03:54 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/19 06:58:22 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/20 23:03:22 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*set_path(t_cmd *cmd, char **path, t_env **env)
 	{
 		*path = get_env_("HOME", *env);
 		if (!*path)
-			printf("HOME  unset\n");
+			printf("minishell: cd: HOME not set\n");
 	}
 	else if (ft_strcmp(tmp->cmd[1], "-") == 0)
 	{

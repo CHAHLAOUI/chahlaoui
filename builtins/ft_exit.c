@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:20:43 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/19 08:19:20 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:51:40 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	put_exit(char *mini, char *path, char *err)
 	exit_st(255);
 }
 
-void ft_exit(t_cmd *cmd)
+void	ft_exit(t_cmd *cmd)
 {
 	size_t		nbr_arg;
 	long int	num;

@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 04:24:42 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/18 10:45:59 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/20 22:54:09 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	proc_env_var(char **str, t_env *env, int *expand)
 {
 	char	*value;
-	
+
 	if (compare_pos1(*str) && !check_quotes1(*str))
 		*expand = 1;
 	value = search_and_replace_env_var(*str, env);

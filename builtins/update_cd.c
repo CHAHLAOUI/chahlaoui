@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 07:01:15 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/18 17:11:57 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:51:23 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	update_cd_add(t_env **env, char *key, char *value, int append)
 	if (check_key(*env, key))
 	{
 		(update_cd_value(env, key, value, append), free(key));
-		return  (1);
+		return (1);
 	}
 	else
 	{

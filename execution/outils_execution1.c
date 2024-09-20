@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 01:35:19 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/19 22:12:41 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:48:39 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	*handle_command_path(char *command, t_env *env)
 {
 	char	*path;
+
 	if (!command)
 		return (NULL);
 	if (command[0] == '/' || ft_strncmp(command, "./", 2) == 0)
@@ -53,9 +54,7 @@ void	execute_path(char *path, t_cmd *cmd, t_env *env)
 	if (stat(path, &path_stat) == 0)
 	{
 		if (S_ISDIR(path_stat.st_mode))
-		{
 			put_erroor_126("minishell: ", path, ": Is a directory\n");
-		}
 		else if (access(path, X_OK) == 0)
 		{
 			redirections(cmd);
@@ -66,11 +65,7 @@ void	execute_path(char *path, t_cmd *cmd, t_env *env)
 			(exit_stat(126), exit(126));
 		}
 		else
-		{
-			fprintf(stderr, "minishell: %s: Permission denied\n", path);
-			exit_stat(126);
-			exit(126);
-		}
+			put_erroor_126("minishell: ", path, ": Permission denied\n");
 	}
 	else
 	{
@@ -86,9 +81,9 @@ void	execute_command(t_cmd *cmd, t_env *env)
 	char	*path;
 	char	*command;
 
-	if (!cmd->cmd[0])
-		return ;
 	command = ft_strdup(cmd->cmd[0]);
+	if (!command || (command[0] == '\0' && cmd->expd[0] == 2))
+		return ;
 	if (is_all_spaces(command))
 		exec_command_not_found(command);
 	path = handle_command_path(command, env);

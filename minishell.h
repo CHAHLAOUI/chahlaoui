@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:11:47 by achahlao          #+#    #+#             */
-/*   Updated: 2024/09/19 19:34:02 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:56:11 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include <signal.h>
-#include <termios.h>
+# include <termios.h>
 # include <unistd.h>
 # include <ctype.h>
 # include <string.h>
@@ -154,11 +154,9 @@ char	**env_to_tab(t_env *env);
 char	*get_path(char *cmd, char **env);
 char	**env_to_tab(t_env *env);
 void	execution(t_shell *shell);
-// int  redirections(t_shell *shell);
 void	expanding(t_shell *shell);
 void	signal_handler(int signum);
 char	*get_env_value_by_key(t_env *env, char *key);
-void	setup_signals(void);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 size_t	ft_strlcpy(char *d, char *s, size_t l);
 int		ft_count_w(char const *str, char c);
@@ -168,7 +166,7 @@ char	*ft_strcat(char *d, char *s);
 char	*ft_strstr(char *src, char *rech);
 char	*ft_strcpy(char *d, char *s1);
 int		cmd_size(t_cmd *head);
-int		is_all_spaces(const char *str);
+int		is_all_spaces(char *str);
 char	*search_and_replace_env_var(char *cmd, t_env *env);
 int		is_single_quotes(char *str, char *pos);
 void	process_cmd(t_cmd *cmd);
@@ -182,12 +180,10 @@ char	*add_quotes(char *str);
 char	*generate_unique_filename(void);
 void	write_fd(int fd, char *str);
 void	handle_signal_herdoc(int signum);
-int		unquoted_del(char *delimiter);
-int		s_quoted_del(char *delimiter);
-int		d_quoted_del(char *delimiter);
+int		s_del(char *delimiter);
+int		d_del(char *delimiter);
 int		check_builtin(char *cmd);
 void	execute_builtin(t_cmd *cmd, t_shell *shell);
-int		is_all_spaces(const char *str);
 void	set_st_ext(int exit_st, int N_exit);
 int		is_directory(const char *path);
 void	free_fil_args(char **filtered_cmd);
@@ -221,7 +217,6 @@ void	handle_error(char *f_key, char *f_value);
 void	ft_env(t_env *list);
 int		check_quotes1(char *str);
 int		is_last_command_exit(t_cmd *cmd_list);
-void	update_cd(t_env **env, char *key, char *value, int append);
 int		redirections(t_cmd *cmd);
 char	*rest_cmd(char *result, int res_len, char *cmd);
 void	expand_wildcard(t_cmd *cmd, int *index);
@@ -233,5 +228,6 @@ void	insert_resul(t_cmd *cmd, char **wildcard_res, int *index, int t_count);
 char	*ft_strjoin1(char *s1, char *s2);
 int		update_or_add(t_env **env, char *key, char *value, int append);
 void	update_cd_value(t_env **env, char *key, char *value, int append);
+int		is_wildcard_quoted(char *str);
 int		update_cd_add(t_env **env, char *key, char *value, int append);
 #endif

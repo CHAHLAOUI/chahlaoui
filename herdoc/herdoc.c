@@ -6,11 +6,27 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:48:00 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/19 19:54:05 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:57:13 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+#include "../minishell.h"
+
+int	sd_quote(char *delimiter)
+{
+	int	i;
+
+	i = 0;
+	while (delimiter[i])
+	{
+		if (delimiter[i] == '\'' || delimiter[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 static void	handle_heredoc_input(int fd_w, char *delimiter, t_shell *shell)
 {
@@ -28,7 +44,7 @@ static void	handle_heredoc_input(int fd_w, char *delimiter, t_shell *shell)
 			break ;
 		if (*input_line == '\0')
 			write(fd_w, "", 0);
-		if (d_quoted_del(delimiter) || s_quoted_del(delimiter))
+		if (d_del(delimiter) || s_del(delimiter) || sd_quote(delimiter))
 			write_fd(fd_w, input_line);
 		else
 		{
@@ -73,8 +89,7 @@ static int	process_redirection(t_cmd *cmd, t_shell *shell, char *del)
 		(1) && (heredoc_flag = 0, dup2(f, 0));
 		(close(f), close(fd_r));
 		(close(fd_w), free(filename), exit_stat(1));
-		free_cmd(shell->head);
-		ft_free(shell->args);
+		(free_cmd(shell->head), ft_free(shell->args));
 		return (free(shell->input), -3);
 	}
 	(1) && (close(fd_w), close(f));
@@ -84,7 +99,6 @@ static int	process_redirection(t_cmd *cmd, t_shell *shell, char *del)
 	cmd->fd_herdoc = fd_r;
 	return (0);
 }
-
 
 int	ft_heredoc(t_shell *shell)
 {

@@ -6,7 +6,7 @@
 /*   By: achahlao <achahlao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 21:43:07 by amandour          #+#    #+#             */
-/*   Updated: 2024/09/18 23:15:59 by achahlao         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:50:30 by achahlao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,7 @@ void	execution(t_shell *shell)
 			}
 			if (pid == 0)
 				child_process(&info, i);
-			info.pids[i] = pid;
-			info.cmd = info.cmd->next;
+			(1) && (info.pids[i] = pid, info.cmd = info.cmd->next);
 		}
 		(close_pipes(info.pipefd, info.n), wait_pro(&info));
 	}

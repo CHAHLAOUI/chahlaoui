@@ -1012,3 +1012,5 @@ echo JKDSGFDS > "$x"
 
 
 ==88843==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x0001005f927d bp 0x7ffeef6140b0 sp 0x7ffeef614080 T0)
+
+$gdshf | ls | $gsdh | ls
